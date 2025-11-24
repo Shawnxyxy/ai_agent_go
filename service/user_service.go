@@ -15,7 +15,7 @@ func CreateUserHandler(u *model.User) error {
 }
 // 根据ID获取用户
 func GetUserService(id uint) (*model.User, error) {
-	return dao.GetUserByID(id)
+	return dao.GetUserByIDWithCache(id)
 }
 // 更新用户
 func UpdateUserService(u *model.User) error {

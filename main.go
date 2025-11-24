@@ -67,6 +67,8 @@ func main() {
 	// ValidateConfig()
 	// 初始化MySQL
 	database.InitMySQL()
+	// 初始化Redis
+	database.InitRedis()
 	// AutoMigrate 自动建表
 	database.DB.AutoMigrate(&model.User{})
 	// 启动路由

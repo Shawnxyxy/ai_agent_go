@@ -6,6 +6,7 @@ import (
 	"time"
 
 	"ai_agent/config"
+	"ai_agent/model"
 
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
@@ -44,5 +45,16 @@ func InitMySQL() {
 	if err != nil {
 		panic("failed to connect database: " + err.Error())
 	}
-	fmt.Println("MySQL connected successfullt")
+	fmt.Println("MySQL connected successfully")
+
+	// ======== 自动建表 ========
+	err = DB.AutoMigrate(
+		&model.User{},
+		&model.UserAuth{},
+	)
+	if err != nil {
+		panic("AutoMigrate failed: " + err.Error())
+	}
+
+	fmt.Println("MySQL migrate completed")
 }
