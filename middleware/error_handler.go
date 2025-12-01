@@ -15,7 +15,7 @@ func ErrorHandler() gin.HandlerFunc {
 			for _, ginErr := range c.Errors {
 				log.Printf("[ERROR] %v\n", ginErr.Err)
 			}
-			response.RespError(c, 500, "Internal Server Error")
+			response.Fail(c, 500, "Internal Server Error")
 			c.Abort()
 		}
 	}

@@ -38,7 +38,7 @@ func RateLimit(limiter *RateLimiter) gin.HandlerFunc {
 			limiter.LastReset = now
 		}
 		if limiter.Requests >= limiter.Limit {
-			response.RespError(c, http.StatusTooManyRequests, "too many requests")
+			response.Fail(c, http.StatusTooManyRequests, "too many requests")
 			c.Abort()
 			return
 		}

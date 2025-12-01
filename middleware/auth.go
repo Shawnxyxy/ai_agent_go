@@ -11,7 +11,7 @@ func Auth() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		token := c.GetHeader(("token"))
 		if token == "" {
-			response.RespError(c, http.StatusUnauthorized, "missing token")
+			response.Fail(c, http.StatusUnauthorized, "missing token")
 			c.Abort()
 			return
 		}

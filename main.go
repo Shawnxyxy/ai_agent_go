@@ -1,17 +1,19 @@
 package main
 
 import (
+	"ai_agent/worker"
+	"ai_agent/scheduler"
 	"ai_agent/config"
-	"ai_agent/router"
-	"ai_agent/model"
 	"ai_agent/database"
-	"fmt"
+	"ai_agent/router"
 	"context"
 	"database/sql"
+	"fmt"
 
 	_ "github.com/go-sql-driver/mysql" //  _ 表示 只导入包，但不直接使用其中的标识符
 	"github.com/redis/go-redis/v9"
 )
+
 // 用于统一验证 App、MySQL、Redis 配置
 func ValidateConfig() {
 	fmt.Println("===== Config Validation Start =====")
@@ -63,14 +65,16 @@ func ValidateConfig() {
 func main() {
 	// 初始化配置
 	config.InitConfig()
-	// 验证配置
-	// ValidateConfig()
 	// 初始化MySQL
 	database.InitMySQL()
 	// 初始化Redis
 	database.InitRedis()
-	// AutoMigrate 自动建表
-	database.DB.AutoMigrate(&model.User{})
+	// 启动 worker pool
+	pool := worker.NewWorkerPool(3) // 并发执行3个任务
+	pool.AddJob(worker.Job{Name: "Warmup Embedding Model"})
+	pool.AddJob(worker.Job{Name: "Initialize Memory"})
+	// 启动定时调度器
+	go scheduler.StartScheduler(pool)
 	// 启动路由
 	r := router.SetupRouter()
 	// 从配置读取端口

@@ -16,19 +16,19 @@ type registerRequest struct {
 func RegisterHandler(c *gin.Context) {
     var req registerRequest
     if err := c.ShouldBindJSON(&req); err != nil {
-        response.RespError(c, http.StatusBadRequest, "invalid request body")
+        response.Fail(c, http.StatusBadRequest, "invalid request body")
         return
     }
 
     if err := service.Register(req.Username, req.Password); err != nil {
         // 区分重复用户名与其他错误
         if err.Error() == "username already exists" {
-            response.RespError(c, http.StatusBadRequest, err.Error())
+            response.Fail(c, http.StatusBadRequest, err.Error())
             return
         }
-        response.RespError(c, http.StatusInternalServerError, "register failed: "+err.Error())
+        response.Fail(c, http.StatusInternalServerError, "register failed: "+err.Error())
         return
     }
 
-    response.RespOk(c, gin.H{"message": "register success"})
+    response.Success(c, gin.H{"message": "register success"})
 }

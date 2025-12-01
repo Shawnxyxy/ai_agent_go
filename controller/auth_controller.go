@@ -20,13 +20,13 @@ func LoginHandler(c *gin.Context) {
 	var req LoginRequest
 
 	if err := c.ShouldBindJSON(&req); err != nil {
-		response.RespError(c, 400, "invalid parameters")
+		response.Fail(c, 400, "invalid parameters")
 		return
 	}
 
 	auth, err := service.LoginService(req.Username, req.Password)
 	if err != nil {
-		response.RespError(c, 401, err.Error())
+		response.Fail(c, 401, err.Error())
 		return
 	}
 
@@ -37,7 +37,7 @@ func LoginHandler(c *gin.Context) {
     })
     tokenString, _ := token.SignedString(jwtKey)
 
-    response.RespOk(c, gin.H{
+    response.Success(c, gin.H{
         "message": "login success",
         "token":   tokenString,
         "user":    auth,

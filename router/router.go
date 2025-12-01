@@ -25,7 +25,7 @@ func SetupRouter() *gin.Engine {
 	// ====== 系统级接口 ======
 	// health接口验证
 	r.GET("/health", func(c *gin.Context) {
-		response.RespOk(c, gin.H{"status": "ok"})
+		response.Success(c, gin.H{"status": "ok"})
 	})
 	// recovery中间件验证
 	r.GET("/panic", func(c *gin.Context) {
@@ -49,6 +49,7 @@ func SetupRouter() *gin.Engine {
 		private.POST("/user/create", controller.CreateUserHandler)
 		private.PUT("/user/:id", controller.UpdateUserHandler)
 		private.DELETE("/user/:id", controller.DeleteUserHandler)
+		private.POST("/task", controller.CreateTaskHandler)
 	}
 
 	// ========================
