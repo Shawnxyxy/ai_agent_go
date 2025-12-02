@@ -11,6 +11,7 @@ type Config struct {
 	App		AppConfig
 	MySQL	MySQLConfig
 	Redis	RedisConfig
+	DeepSeek DeepSeekConfig `mapstructure:"deepseek"` // 显式声明
 }
 
 type AppConfig struct {
@@ -34,6 +35,12 @@ type RedisConfig struct {
 	Port     int
 	Password string
 	DB       int
+}
+
+type DeepSeekConfig struct {
+	ApiKey  string `mapstructure:"api_key"`
+	BaseURL string `mapstructure:"base_url"`
+	Model   string `mapstructure:"model"`
 }
 
 func InitConfig() {
@@ -67,6 +74,7 @@ func InitConfig() {
 	if err != nil {
 		panic(fmt.Errorf("unmarshal config error: %w", err))
 	}
+	fmt.Printf("Deepseek Config: %+v\n", Cfg.DeepSeek)
 	fmt.Println("Config Loaded Sucessfully")
 	fmt.Printf("Current Port: %d\n", Cfg.App.Port)
 }

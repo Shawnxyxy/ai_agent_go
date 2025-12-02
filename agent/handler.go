@@ -1,8 +1,9 @@
 package agent
 
 import (
-	"fmt"
+	"ai_agent/llm"
 	"ai_agent/model"
+	"fmt"
 )
 
 func HandleTask(task model.Task) (string, error) {
@@ -29,5 +30,11 @@ func handleEcho(task model.Task) (string, error) {
 }
 
 func handleSummarize(task model.Task) (string, error) {
-	return "Summary: " + task.Payload, nil
+	promt := "请总结以下内容：" + task.Payload
+
+	answer, err := llm.AskDeepSeek(promt)
+	if err != nil {
+		return "", err
+	}
+	return answer, nil
 }
