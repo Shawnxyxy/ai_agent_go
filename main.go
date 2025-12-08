@@ -6,6 +6,8 @@ import (
 	"ai_agent/config"
 	"ai_agent/database"
 	"ai_agent/router"
+	"ai_agent/model"
+	"ai_agent/agent"
 	"context"
 	"database/sql"
 	"fmt"
@@ -69,6 +71,28 @@ func main() {
 	database.InitMySQL()
 	// 初始化Redis
 	database.InitRedis()
+
+	// ----------- 临时测试 agent -----------
+	fmt.Println("========== Start Agent Test ==========")
+	testTasks := []model.Task{
+		{Type: "echo", Payload: "Hello agent!"},
+		{Type: "summarize", Payload: "Artificial Intelligence is transforming work and life."},
+		{Type: "chat", Payload: "Hi, how are you?"},
+		{Type: "recycle_memory"},
+	}
+
+	for _, t := range testTasks {
+		fmt.Println("====================================")
+		fmt.Println("Processing task:", t.Type)
+		result, err := agent.HandleTask(t)
+		if err != nil {
+			fmt.Println("Error:", err)
+		} else {
+			fmt.Println("Result:", result)
+		}
+	}
+	fmt.Println("========== End Agent Test ==========")
+
 	// 启动 worker pool
 	pool := worker.NewWorkerPool(3) // 并发执行3个任务
 	pool.AddJob(worker.Job{Name: "Warmup Embedding Model"})

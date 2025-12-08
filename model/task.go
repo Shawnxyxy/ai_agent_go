@@ -19,3 +19,12 @@ const (
 	TaskTypeWarmup     = "warmup"
 	TaskTypeLLMCall    = "llm_call"
 )
+
+type Memory struct {
+    ID         uint      `gorm:"primaryKey"`
+    UserID     uint      `gorm:"default:0"`
+    Content    string    `gorm:"type:text"`
+    Type       string    `gorm:"type:varchar(20);default:'interaction'"` // memory type
+    Importance int       `gorm:"default:0"`                              // importance score
+    CreatedAt  time.Time `gorm:"autoCreateTime"`
+}

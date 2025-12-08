@@ -52,6 +52,7 @@ func InitMySQL() {
 		&model.User{},
 		&model.UserAuth{},
 		&model.Task{},
+		&model.Memory{},
 	)
 	if err != nil {
 		panic("AutoMigrate failed: " + err.Error())
